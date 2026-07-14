@@ -1,4 +1,5 @@
 import { gsap } from "@/lib/gsap";
+import { motion } from "@/design-system/motion";
 
 export function createHeroTimeline(container: HTMLElement) {
   const tl = gsap.timeline({
@@ -37,6 +38,28 @@ export function createHeroTimeline(container: HTMLElement) {
     },
     "-=0.3"
   );
+
+  tl.from(
+  container.querySelector('[data-hero="roles"]'),
+  {
+    opacity: 0,
+    y: 24,
+    duration: motion.duration.normal,
+    ease: motion.ease.primary,
+  },
+  "-=0.5"
+);
+
+tl.from(
+  container.querySelector('[data-hero="stats"]'),
+  {
+    opacity: 0,
+    y: 30,
+    duration: motion.duration.normal,
+    ease: motion.ease.primary,
+  },
+  "-=0.2"
+);
 
   tl.from(
     container.querySelector('[data-hero="actions"]'),

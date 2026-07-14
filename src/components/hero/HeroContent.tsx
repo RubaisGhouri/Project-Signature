@@ -2,6 +2,8 @@ import HeroBadge from "./HeroBadge";
 import HeroHeading from "./HeroHeading";
 import HeroDescription from "./HeroDescription";
 import HeroActions from "./HeroActions";
+import HeroRoles from "./HeroRoles";
+import HeroStats from "./HeroStats";
 
 export default function HeroContent() {
   return (
@@ -16,13 +18,18 @@ export default function HeroContent() {
         justify-center
       "
     >
-      <HeroBadge />
+     <HeroBadge />
 
-      <HeroHeading />
+     <HeroHeading />
 
-      <HeroDescription />
+     <HeroRoles />
 
-      <HeroActions />
+     <HeroDescription />
+
+     <HeroActions />
+
+     <HeroStats />
+     
     </div>
   );
 }
