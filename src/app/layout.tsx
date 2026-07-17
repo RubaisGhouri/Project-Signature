@@ -4,6 +4,7 @@ import "./globals.css";
 import CursorProvider from "@/components/cursor/CursorProvider";
 import ThemeProvider from "@/providers/ThemeProvider";
 import LenisProvider from "@/providers/LenisProvider";
+import NavigationProvider from "@/providers/navigation/NavigationProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -53,7 +54,11 @@ export default function RootLayout({
      <body>
   <ThemeProvider>
     <LenisProvider>
-      {children}
+      <NavigationProvider>
+
+          {children}
+
+      </NavigationProvider>
 
       <CursorProvider />
     </LenisProvider>

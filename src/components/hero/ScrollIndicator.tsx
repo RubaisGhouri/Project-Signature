@@ -1,6 +1,7 @@
 export default function ScrollIndicator() {
   return (
     <div
+      data-hero="scroll"
       className="
       absolute
       bottom-10

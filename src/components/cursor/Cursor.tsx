@@ -1,54 +1,109 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "@/lib/gsap";
 
 export default function Cursor() {
-  const dot = useRef<HTMLDivElement>(null);
-  const ring = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!dot.current || !ring.current) return;
+    setMounted(true);
+  }, []);
 
-    const dotX = gsap.quickTo(dot.current, "x", {
-      duration: 0.08,
-      ease: "power3.out",
+  useEffect(() => {
+    if (!mounted) return;
+
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+
+    if (!dot || !ring) return;
+
+    let mouseX = 0;
+    let mouseY = 0;
+
+    let ringX = 0;
+    let ringY = 0;
+
+    let visible = false;
+    let started = false;
+
+    let animationId = 0;
+
+    gsap.set([dot, ring], {
+      opacity: 0,
     });
 
-    const dotY = gsap.quickTo(dot.current, "y", {
-      duration: 0.08,
-      ease: "power3.out",
-    });
+    const render = () => {
+      if (!started) return;
 
-    const ringX = gsap.quickTo(ring.current, "x", {
-      duration: 0.25,
-      ease: "power3.out",
-    });
+      gsap.set(dot, {
+        x: mouseX - 5,
+        y: mouseY - 5,
+      });
 
-    const ringY = gsap.quickTo(ring.current, "y", {
-      duration: 0.25,
-      ease: "power3.out",
-    });
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      dotX(e.clientX);
-      dotY(e.clientY);
+      gsap.set(ring, {
+        x: ringX - 20,
+        y: ringY - 20,
+      });
 
-      ringX(e.clientX);
-      ringY(e.clientY);
+      animationId = requestAnimationFrame(render);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    const handleMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      if (!visible) {
+        visible = true;
+
+        ringX = mouseX;
+        ringY = mouseY;
+
+        gsap.set(dot, {
+          x: mouseX - 5,
+          y: mouseY - 5,
+        });
+
+        gsap.set(ring, {
+          x: mouseX - 20,
+          y: mouseY - 20,
+        });
+
+        gsap.to([dot, ring], {
+          opacity: 1,
+          duration: 0.2,
+          ease: "power2.out",
+        });
+      }
+
+      if (!started) {
+        started = true;
+        render();
+      }
+    };
+
+    window.addEventListener("mousemove", handleMove);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(animationId);
+      window.removeEventListener("mousemove", handleMove);
     };
-  }, []);
+  }, [mounted]);
+
+  if (!mounted) return null;
 
   return (
     <>
+      {/* Ring */}
+
       <div
-        ref={ring}
+        ref={ringRef}
         className="
           pointer-events-none
           fixed
@@ -57,28 +112,32 @@ export default function Cursor() {
           z-[9999]
           h-10
           w-10
-          -translate-x-1/2
-          -translate-y-1/2
           rounded-full
           border
-          border-cyan-400/60
+          border-cyan-400/50
+          backdrop-blur-sm
+          opacity-0
+          will-change-transform
         "
       />
 
+      {/* Dot */}
+
       <div
-        ref={dot}
+        ref={dotRef}
         className="
           pointer-events-none
           fixed
           left-0
           top-0
-          z-[9999]
+          z-[10000]
           h-2.5
           w-2.5
-          -translate-x-1/2
-          -translate-y-1/2
           rounded-full
           bg-cyan-400
+          shadow-[0_0_14px_rgba(34,211,238,.9)]
+          opacity-0
+          will-change-transform
         "
       />
     </>

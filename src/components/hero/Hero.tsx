@@ -7,7 +7,15 @@ import ScrollIndicator from "./ScrollIndicator";
 
 export default function Hero() {
   return (
-    <section className="relative isolate min-h-screen overflow-hidden bg-[#05070d]">
+    <section  data-page="hero"
+  className="
+    relative
+    isolate
+    min-h-screen
+    overflow-hidden
+    bg-[#05070d]
+    pt-20
+    ">
       <HeroBackground />
 
       <HeroSocial />

@@ -1,13 +1,26 @@
+"use client";
+
+import { useRef } from "react";
+
+import { useHeroAnimation } from "@/hooks/useHeroAnimation";
+
 import HeroBadge from "./HeroBadge";
 import HeroHeading from "./HeroHeading";
 import HeroDescription from "./HeroDescription";
 import HeroActions from "./HeroActions";
 import HeroRoles from "./HeroRoles";
 import HeroStats from "./HeroStats";
+import HeroSocial from "./HeroSocial";
+import ScrollIndicator from "./ScrollIndicator";
 
 export default function HeroContent() {
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  useHeroAnimation(heroRef);
+
   return (
     <div
+      ref={heroRef}
       className="
         relative
         z-10
@@ -18,18 +31,21 @@ export default function HeroContent() {
         justify-center
       "
     >
-     <HeroBadge />
+      <HeroBadge />
 
-     <HeroHeading />
+      <HeroHeading />
 
-     <HeroRoles />
+      <HeroRoles />
 
-     <HeroDescription />
+      <HeroDescription />
 
-     <HeroActions />
+      <HeroActions />
 
-     <HeroStats />
-     
+      <HeroStats />
+
+      <HeroSocial />
+
+      <ScrollIndicator />
     </div>
   );
 }

@@ -12,6 +12,7 @@ export default function Button({
   ...props
 }: ButtonProps) {
   return (
+   
     <button
       className={cn(
         "inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-medium transition-all duration-300",
@@ -25,5 +26,6 @@ export default function Button({
     >
       {children}
     </button>
+  
   );
 }

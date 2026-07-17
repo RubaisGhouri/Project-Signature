@@ -1,74 +1,92 @@
 import { gsap } from "@/lib/gsap";
-import { motion } from "@/design-system/motion";
 
-export function createHeroTimeline(container: HTMLElement) {
+export function animateHero(container: HTMLElement) {
+  const q = gsap.utils.selector(container);
+
   const tl = gsap.timeline({
     defaults: {
-      ease: "power3.out",
+      ease: "power4.out",
     },
   });
 
+  tl.from(q('[data-hero="badge"]'), {
+    opacity: 0,
+    y: 24,
+    duration: 0.6,
+  });
+
   tl.from(
-    container.querySelector('[data-hero="badge"]'),
+    q("[data-word]"),
+    {
+      opacity: 0,
+      y: 90,
+      filter: "blur(20px)",
+      stagger: 0.12,
+      duration: 1,
+    },
+    "-=0.25"
+  );
+
+  tl.from(
+    q('[data-hero="roles"]'),
+    {
+      opacity: 0,
+      y: 30,
+      duration: 0.6,
+    },
+    "-=0.55"
+  );
+
+  tl.from(
+    q('[data-hero="description"]'),
     {
       opacity: 0,
       y: 24,
-      duration: 0.5,
-    }
-  );
-
-  tl.from(
-    container.querySelectorAll("[data-word]"),
-    {
-      opacity: 0,
-      y: 70,
-      rotateX: -80,
-      stagger: 0.08,
-      duration: 0.9,
+      duration: 0.6,
     },
-    "-=0.15"
+    "-=0.45"
   );
 
   tl.from(
-    container.querySelector('[data-hero="description"]'),
-    {
-      opacity: 0,
-      y: 20,
-      duration: 0.5,
-    },
-    "-=0.3"
-  );
-
-  tl.from(
-  container.querySelector('[data-hero="roles"]'),
-  {
-    opacity: 0,
-    y: 24,
-    duration: motion.duration.normal,
-    ease: motion.ease.primary,
-  },
-  "-=0.5"
-);
-
-tl.from(
-  container.querySelector('[data-hero="stats"]'),
-  {
-    opacity: 0,
-    y: 30,
-    duration: motion.duration.normal,
-    ease: motion.ease.primary,
-  },
-  "-=0.2"
-);
-
-  tl.from(
-    container.querySelector('[data-hero="actions"]'),
+    q('[data-hero="actions"]'),
     {
       opacity: 0,
       scale: 0.94,
-      duration: 0.45,
+      y: 24,
+      duration: 0.55,
     },
-    "-=0.25"
+    "-=0.35"
+  );
+
+  tl.from(
+    q('[data-hero="stats"]'),
+    {
+      opacity: 0,
+      y: 24,
+      stagger: 0.08,
+      duration: 0.55,
+    },
+    "-=0.30"
+  );
+
+  tl.from(
+    document.querySelector('[data-hero="socials"]'),
+    {
+      opacity: 0,
+      x: -40,
+      duration: 0.55,
+    },
+    "-=0.45"
+  );
+
+  tl.from(
+    document.querySelector('[data-hero="scroll"]'),
+    {
+      opacity: 0,
+      y: 30,
+      duration: 0.55,
+    },
+    "-=0.45"
   );
 
   return tl;

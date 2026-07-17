@@ -5,7 +5,7 @@ export default function HeroHeading() {
 
   return (
     <h1
-      data-hero="heading"
+      data-hero="title"
       className="
         mt-8
         text-center

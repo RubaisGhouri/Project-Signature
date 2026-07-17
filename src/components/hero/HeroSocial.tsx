@@ -1,6 +1,7 @@
 export default function HeroSocial() {
   return (
     <div
+      data-hero="socials"
       className="
       absolute
       left-8
