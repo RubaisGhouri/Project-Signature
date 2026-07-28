@@ -15,7 +15,7 @@ export const works: Work[] = [
     title: "Visvadi",
     category: "Corporate Website",
     year: "2025",
-    image: "/works/placeholder.webp",
+    image: "/works/visvadi.webp",
     live: "https://visvadi.com/",
     description:
       "Modern React-based corporate website focused on performance, responsive layouts and a premium user experience.",
@@ -27,7 +27,7 @@ export const works: Work[] = [
     title: "DevSpark Creations",
     category: "Digital Agency",
     year: "2025",
-    image: "/works/placeholder.webp",
+    image: "/works/DevSpark.webp",
     live: "https://devsparkcreations.com/",
     description:
       "Digital agency website built with Divi and Divi Flash, featuring custom layouts and business-focused presentation.",
@@ -39,23 +39,28 @@ export const works: Work[] = [
     title: "AJ Digital Craft",
     category: "Creative Agency",
     year: "2025",
-    image: "/works/placeholder.webp",
+    image: "/works/AJDigitalCraft.webp",
     live: "https://ajdigitalcraft.com/",
     description:
       "Creative agency website with premium visuals, modern UI and Divi-powered custom sections.",
     tech: ["WordPress", "Divi", "Divi Flash"],
-  },
+},
 
   {
     id: 4,
     title: "Netradyne",
     category: "Enterprise Website",
     year: "2025",
-    image: "/works/placeholder.webp",
+    image: "/works/Netradyne.webp",
     live: "https://www.netradyne.com/",
     description:
       "Enterprise-scale website focused on clean information architecture and responsive business presentation.",
-    tech: ["WordPress", "Divi", "Divi Flash", "Enterprise"],
+    tech: [
+      "WordPress",
+      "Divi",
+      "Divi Flash",
+      "Enterprise",
+    ],
   },
 
   {
@@ -63,7 +68,7 @@ export const works: Work[] = [
     title: "Al Nisa Flowers",
     category: "Floral Business",
     year: "2025",
-    image: "/works/placeholder.webp",
+    image: "/works/Al Nisa.webp",
     live: "https://alnisaflowers.com/",
     description:
       "Elegant floral business website designed for showcasing products with a premium shopping experience.",
@@ -75,7 +80,7 @@ export const works: Work[] = [
     title: "Rosa Law APC",
     category: "Law Firm",
     year: "2025",
-    image: "/works/placeholder.webp",
+    image: "/works/RosaLaw.webp",
     live: "https://rosalawapc.com/",
     description:
       "Professional law firm website emphasizing credibility, trust and clean content hierarchy.",
@@ -87,7 +92,7 @@ export const works: Work[] = [
     title: "Ninja Tech HB",
     category: "Technology",
     year: "2025",
-    image: "/works/placeholder.webp",
+    image: "/works/ninja.webp",
     live: "https://ninjatechhb.com/",
     description:
       "Technology company website with modern layouts, responsive design and optimized performance.",
@@ -99,7 +104,7 @@ export const works: Work[] = [
     title: "Drywall Patch Guys",
     category: "Home Services",
     year: "2025",
-    image: "/works/placeholder.webp",
+    image: "/works/patchguys.webp",
     live: "https://drywallpatchguys.com/",
     description:
       "Service-based business website built to maximize lead generation and customer trust.",

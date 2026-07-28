@@ -1,91 +1,110 @@
 import { gsap } from "@/lib/gsap";
 
-export function animateFeaturedProjects(section: HTMLElement) {
+import { SceneController } from "./sceneController";
+import { WheelController } from "./wheelController";
+
+import { RenderEngine } from "../engine/renderEngine";
+
+import { WelcomeScene } from "./scenes/welcome";
+import { ProjectSignatureScene } from "./scenes/projectSignature";
+import { QuantNovaScene } from "./scenes/quantnova";
+import { SelectedWorksScene } from "./scenes/selectedWorks";
+import { PhilosophyScene } from "./scenes/philosophy";
+import { CTAScene } from "./scenes/cta";
+
+export function animateFeaturedProjects(
+  section: HTMLElement
+) {
   return gsap.context(() => {
-    const cards = gsap.utils.toArray<HTMLElement>("[data-project-card]");
+    /*
+      Register all scenes.
+    */
 
-    if (!cards.length) return;
+    const sceneController =
+      new SceneController();
 
-    gsap.set(cards, {
-      scale: 0.72,
-      opacity: 0,
-      rotationX: -18,
-      rotationY: 8,
-      z: -500,
-      transformOrigin: "center center",
-    });
+    sceneController.register(
+      WelcomeScene
+    );
 
-    gsap.set(cards[0], {
-      scale: 1,
-      opacity: 1,
-      rotationX: 0,
-      rotationY: 0,
-      z: 0,
-    });
+    sceneController.register(
+      ProjectSignatureScene
+    );
 
-    const tl = gsap.timeline({
-      defaults: {
-        ease: "power4.inOut",
-      },
-      scrollTrigger: {
-        trigger: section,
-        start: "top top",
-        end: `+=${cards.length * 1800}`,
-        pin: true,
-        scrub: 1.2,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-      },
-    });
+    sceneController.register(
+      QuantNovaScene
+    );
 
-    cards.forEach((card, index) => {
-      if (index === 0) return;
+    sceneController.register(
+      SelectedWorksScene
+    );
 
-      const previous = cards[index - 1];
+    sceneController.register(
+      PhilosophyScene
+    );
 
-      tl.to(previous, {
-        scale: 0.82,
-        opacity: 0.25,
-        y: -180,
-        z: -300,
-        rotationX: 16,
-        rotationZ: -4,
-        filter: "blur(8px)",
-        duration: 1,
-      });
+    sceneController.register(
+      CTAScene
+    );
 
-      tl.fromTo(
-        card,
-        {
-          opacity: 0,
-          scale: 1.35,
-          y: 260,
-          z: -700,
-          rotationX: -25,
-          rotationY: 10,
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          z: 0,
-          rotationX: 0,
-          rotationY: 0,
-          duration: 1,
-        },
-        "<"
-      );
+    /*
+      Render Engine.
+    */
 
-      tl.to(
-        card,
-        {
-          rotationZ: 1.2,
-          repeat: 1,
-          yoyo: true,
-          duration: 0.35,
-        },
-        "<+0.25"
-      );
-    });
+    const renderEngine =
+      new RenderEngine();
+
+    /*
+      Wheel Controller.
+    */
+
+    const wheelController =
+      new WheelController();
+
+    wheelController.setCallback(
+      (direction) => {
+        console.log("------------");
+
+        if (direction === "down") {
+          const activeScene =
+            renderEngine.nextScene();
+
+          console.log(
+            "ACTIVE SCENE:",
+            activeScene.id
+          );
+        }
+
+        if (direction === "up") {
+          const activeScene =
+            renderEngine.previousScene();
+
+          console.log(
+            "ACTIVE SCENE:",
+            activeScene.id
+          );
+        }
+      }
+    );
+
+    wheelController.init();
+
+    /*
+      Console Logs.
+    */
+
+    console.log(
+      "FEATURED EXPERIENCE INITIALIZED"
+    );
+
+    console.log(
+      "TOTAL SCENES:",
+      sceneController.getTotalScenes()
+    );
+
+    console.log(
+      sceneController.getAllScenes()
+    );
+
   }, section);
 }
