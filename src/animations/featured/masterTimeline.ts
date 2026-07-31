@@ -3,7 +3,7 @@ import { gsap } from "@/lib/gsap";
 import { SceneController } from "./sceneController";
 import { WheelController } from "./wheelController";
 
-import { RenderEngine } from "../engine/renderEngine";
+import { RenderEngine } from "@/components/featured/renderer/renderEngine";
 
 import { WelcomeScene } from "./scenes/welcome";
 import { ProjectSignatureScene } from "./scenes/projectSignature";
@@ -52,7 +52,9 @@ export function animateFeaturedProjects(
     */
 
     const renderEngine =
-      new RenderEngine();
+      new RenderEngine(
+        sceneController
+      );
 
     /*
       Wheel Controller.
@@ -63,14 +65,18 @@ export function animateFeaturedProjects(
 
     wheelController.setCallback(
       (direction) => {
-        console.log("------------");
+                console.log("------------");
 
         if (direction === "down") {
           const activeScene =
             renderEngine.nextScene();
 
           console.log(
-            "ACTIVE SCENE:",
+            "SCROLL DOWN"
+          );
+
+          console.log(
+            "CURRENT SCENE:",
             activeScene.id
           );
         }
@@ -80,7 +86,11 @@ export function animateFeaturedProjects(
             renderEngine.previousScene();
 
           console.log(
-            "ACTIVE SCENE:",
+            "SCROLL UP"
+          );
+
+          console.log(
+            "CURRENT SCENE:",
             activeScene.id
           );
         }
@@ -105,6 +115,10 @@ export function animateFeaturedProjects(
     console.log(
       sceneController.getAllScenes()
     );
+
+    return () => {
+      wheelController.destroy?.();
+    };
 
   }, section);
 }

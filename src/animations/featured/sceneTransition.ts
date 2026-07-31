@@ -3,10 +3,6 @@ import { gsap } from "@/lib/gsap";
 export class SceneTransition {
   private isLocked = false;
 
-  /*
-    Prevent multiple transitions.
-  */
-
   lock() {
     this.isLocked = true;
   }
@@ -19,10 +15,6 @@ export class SceneTransition {
     return this.isLocked;
   }
 
-  /*
-    Get scene element from DOM.
-  */
-
   getSceneElement(
     sceneId: string
   ): HTMLElement | null {
@@ -31,35 +23,61 @@ export class SceneTransition {
     );
   }
 
-  /*
-    Placeholder timeline.
-  */
+  transition(
+    currentSceneId: string,
+    nextSceneId: string
+  ) {
+    const currentScene =
+      this.getSceneElement(currentSceneId);
 
-  playTimeline() {
-    return gsap.timeline({
+    const nextScene =
+      this.getSceneElement(nextSceneId);
+
+    if (!currentScene || !nextScene) {
+      return;
+    }
+
+    this.lock();
+
+    nextScene.style.pointerEvents =
+      "auto";
+
+    gsap.set(nextScene, {
+      opacity: 0,
+      scale: 0.95,
+      zIndex: 20,
+    });
+
+    const tl = gsap.timeline({
       defaults: {
-        ease: "power4.inOut",
+        duration: 0.8,
+        ease: "power3.inOut",
+      },
+
+      onComplete: () => {
+        currentScene.style.pointerEvents =
+          "none";
+
+        nextScene.style.pointerEvents =
+          "auto";
+
+        this.unlock();
       },
     });
-  }
 
-  /*
-    Next scene transition.
-  */
+    tl.to(currentScene, {
+      opacity: 0,
+      scale: 0.95,
+      zIndex: 0,
+    });
 
-  transitionToNext() {
-    console.log(
-      "Transition -> Next Scene"
-    );
-  }
-
-  /*
-    Previous scene transition.
-  */
-
-  transitionToPrevious() {
-    console.log(
-      "Transition -> Previous Scene"
+    tl.to(
+      nextScene,
+      {
+        opacity: 1,
+        scale: 1,
+      },
+      "<"
     );
   }
 }

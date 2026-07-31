@@ -1,4 +1,5 @@
-import { SceneController } from "../sceneController";
+import { SceneController } from "@/animations/featured/sceneController";
+import { TransitionManager } from "@/animations/featured/transitionManager";
 
 export class RenderEngine {
   private currentScene = 0;
@@ -10,6 +11,9 @@ export class RenderEngine {
   private isLocked = false;
 
   private sceneController: SceneController;
+
+  private transitionManager =
+    new TransitionManager();
 
   constructor(
     sceneController: SceneController
@@ -34,13 +38,26 @@ export class RenderEngine {
     }
 
     if (
-      this.currentScene <
+      this.currentScene >=
       this.totalScenes - 1
     ) {
-      this.currentScene++;
+      return this.getCurrentSceneObject();
     }
 
-    return this.getCurrentSceneObject();
+    const currentSceneObject =
+      this.getCurrentSceneObject();
+
+    this.currentScene++;
+
+    const nextSceneObject =
+      this.getCurrentSceneObject();
+
+    this.transitionManager.next(
+      currentSceneObject.id,
+      nextSceneObject.id
+    );
+
+    return nextSceneObject;
   }
 
   /*
@@ -54,12 +71,24 @@ export class RenderEngine {
     ) {
       return this.getCurrentSceneObject();
     }
-
-    if (this.currentScene > 0) {
-      this.currentScene--;
+        if (this.currentScene <= 0) {
+      return this.getCurrentSceneObject();
     }
 
-    return this.getCurrentSceneObject();
+    const currentSceneObject =
+      this.getCurrentSceneObject();
+
+    this.currentScene--;
+
+    const previousSceneObject =
+      this.getCurrentSceneObject();
+
+    this.transitionManager.previous(
+      currentSceneObject.id,
+      previousSceneObject.id
+    );
+
+    return previousSceneObject;
   }
 
   /*
