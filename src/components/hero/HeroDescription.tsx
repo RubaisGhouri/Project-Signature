@@ -1,19 +1,35 @@
-import { siteConfig } from "@/constants/site-config";
+"use client";
 
 export default function HeroDescription() {
   return (
-    <p
+    <div
       data-hero="description"
       className="
         mt-8
-        max-w-2xl
-        text-center
-        text-lg
-        leading-8
-        text-[var(--color-text-muted)]
+        w-full
+        max-w-4xl
+        px-4
+        sm:px-6
       "
     >
-      {siteConfig.description}
-    </p>
+      <p
+        className="
+          text-center
+          text-base
+          leading-7
+          text-white/60
+          sm:text-lg
+          sm:leading-8
+          lg:text-xl
+          lg:leading-9
+        "
+      >
+        I build premium digital experiences for modern brands using
+        <span className="text-white"> Next.js</span>,
+        <span className="text-white"> WordPress</span> and modern frontend
+        technologies with a strong focus on performance, scalability and
+        exceptional user experience.
+      </p>
+    </div>
   );
 }

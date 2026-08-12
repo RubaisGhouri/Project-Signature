@@ -2,18 +2,44 @@ import { SceneController } from "@/animations/featured/sceneController";
 import { TransitionManager } from "@/animations/featured/transitionManager";
 
 export class RenderEngine {
+  /*
+    ============================================================
+    SCENE STATE
+    ============================================================
+  */
+
   private currentScene = 0;
 
   private totalScenes = 0;
 
-  private isAnimating = false;
+  /*
+    Manual lock controlled by the experience.
+    TransitionManager separately controls the
+    actual GSAP transition state.
+  */
 
   private isLocked = false;
 
+  /*
+    Scene controller owns the registered
+    scene definitions.
+  */
+
   private sceneController: SceneController;
+
+  /*
+    TransitionManager owns SceneTransition,
+    which owns the actual GSAP animations.
+  */
 
   private transitionManager =
     new TransitionManager();
+
+  /*
+    ============================================================
+    CONSTRUCTOR
+    ============================================================
+  */
 
   constructor(
     sceneController: SceneController
@@ -26,16 +52,29 @@ export class RenderEngine {
   }
 
   /*
-    Move to next scene.
+    ============================================================
+    MOVE TO NEXT SCENE
+    ============================================================
   */
 
   nextScene() {
+    /*
+      Never start another transition while:
+
+      1. RenderEngine is locked
+      2. SceneTransition is currently animating
+    */
+
     if (
-      this.isAnimating ||
-      this.isLocked
+      this.isLocked ||
+      this.transitionManager.isAnimating()
     ) {
       return this.getCurrentSceneObject();
     }
+
+    /*
+      Do not move beyond the final scene.
+    */
 
     if (
       this.currentScene >=
@@ -44,55 +83,196 @@ export class RenderEngine {
       return this.getCurrentSceneObject();
     }
 
+    /*
+      Current scene.
+    */
+
     const currentSceneObject =
       this.getCurrentSceneObject();
 
-    this.currentScene++;
+    /*
+      Safety check.
+    */
+
+    if (!currentSceneObject) {
+      return undefined;
+    }
+
+    /*
+      Calculate next scene index.
+    */
+
+    const nextSceneIndex =
+      this.currentScene + 1;
+
+    /*
+      Get next scene.
+    */
 
     const nextSceneObject =
-      this.getCurrentSceneObject();
+      this.sceneController.getScene(
+        nextSceneIndex
+      );
 
-    this.transitionManager.next(
-      currentSceneObject.id,
-      nextSceneObject.id
-    );
+    /*
+      Safety check.
+    */
+
+    if (!nextSceneObject) {
+      return currentSceneObject;
+    }
+
+    /*
+      Start transition.
+
+      SceneTransition handles:
+
+      - incoming scene preparation
+      - outgoing scene animation
+      - incoming scene animation
+      - DOM cleanup
+      - transition lock
+      - transition unlock
+    */
+
+    const timeline =
+      this.transitionManager.next(
+        currentSceneObject.id,
+        nextSceneObject.id
+      );
+
+    /*
+      If no timeline was created,
+      the transition did not start.
+
+      Keep the current scene unchanged.
+    */
+
+    if (!timeline) {
+      return currentSceneObject;
+    }
+
+    /*
+      The transition has successfully started.
+
+      Update the logical scene index now.
+      The visual DOM transition is handled
+      independently by SceneTransition.
+    */
+
+    this.currentScene =
+      nextSceneIndex;
 
     return nextSceneObject;
   }
 
   /*
-    Move to previous scene.
+    ============================================================
+    MOVE TO PREVIOUS SCENE
+    ============================================================
   */
 
   previousScene() {
+    /*
+      Never start another transition while:
+
+      1. RenderEngine is locked
+      2. SceneTransition is currently animating
+    */
+
     if (
-      this.isAnimating ||
-      this.isLocked
+      this.isLocked ||
+      this.transitionManager.isAnimating()
     ) {
       return this.getCurrentSceneObject();
     }
-        if (this.currentScene <= 0) {
+
+    /*
+      Do not move before the first scene.
+    */
+
+    if (
+      this.currentScene <= 0
+    ) {
       return this.getCurrentSceneObject();
     }
+
+    /*
+      Current scene.
+    */
 
     const currentSceneObject =
       this.getCurrentSceneObject();
 
-    this.currentScene--;
+    /*
+      Safety check.
+    */
+
+    if (!currentSceneObject) {
+      return undefined;
+    }
+
+    /*
+      Calculate previous scene index.
+    */
+
+    const previousSceneIndex =
+      this.currentScene - 1;
+
+    /*
+      Get previous scene.
+    */
 
     const previousSceneObject =
-      this.getCurrentSceneObject();
+      this.sceneController.getScene(
+        previousSceneIndex
+      );
 
-    this.transitionManager.previous(
-      currentSceneObject.id,
-      previousSceneObject.id
-    );
+    /*
+      Safety check.
+    */
+
+    if (!previousSceneObject) {
+      return currentSceneObject;
+    }
+
+    /*
+      Start transition.
+    */
+
+    const timeline =
+      this.transitionManager.previous(
+        currentSceneObject.id,
+        previousSceneObject.id
+      );
+
+    /*
+      If no timeline was created,
+      the transition did not start.
+
+      Keep the current scene unchanged.
+    */
+
+    if (!timeline) {
+      return currentSceneObject;
+    }
+
+    /*
+      Transition successfully started.
+
+      Update logical scene index.
+    */
+
+    this.currentScene =
+      previousSceneIndex;
 
     return previousSceneObject;
   }
 
   /*
-    Get current scene index.
+    ============================================================
+    GET CURRENT SCENE INDEX
+    ============================================================
   */
 
   getCurrentScene() {
@@ -100,7 +280,9 @@ export class RenderEngine {
   }
 
   /*
-    Total scenes.
+    ============================================================
+    GET TOTAL SCENES
+    ============================================================
   */
 
   getTotalScenes() {
@@ -108,7 +290,9 @@ export class RenderEngine {
   }
 
   /*
-    Get current scene object.
+    ============================================================
+    GET CURRENT SCENE OBJECT
+    ============================================================
   */
 
   getCurrentSceneObject() {
@@ -118,23 +302,33 @@ export class RenderEngine {
   }
 
   /*
-    Animation Controls.
+    ============================================================
+    GET SCENE BY INDEX
+    ============================================================
   */
 
-  startAnimation() {
-    this.isAnimating = true;
-  }
-
-  stopAnimation() {
-    this.isAnimating = false;
-  }
-
-  isTransitioning() {
-    return this.isAnimating;
+  getScene(index: number) {
+    return this.sceneController.getScene(
+      index
+    );
   }
 
   /*
-    Lock Controls.
+    ============================================================
+    ANIMATION STATE
+    ============================================================
+  */
+
+  isTransitioning() {
+    return (
+      this.transitionManager.isAnimating()
+    );
+  }
+
+  /*
+    ============================================================
+    MANUAL LOCK
+    ============================================================
   */
 
   lock() {
@@ -145,11 +339,36 @@ export class RenderEngine {
     this.isLocked = false;
   }
 
+  isLockedState() {
+    return this.isLocked;
+  }
+
   /*
-    Reset Experience.
+    ============================================================
+    RESET EXPERIENCE
+    ============================================================
   */
 
   reset() {
+    /*
+      Reset logical scene index.
+    */
+
     this.currentScene = 0;
+
+    /*
+      Release manual lock.
+    */
+
+    this.isLocked = false;
+
+    /*
+      Reset transition manager.
+
+      This will reset SceneTransition's
+      internal transition lock.
+    */
+
+    this.transitionManager.reset();
   }
 }

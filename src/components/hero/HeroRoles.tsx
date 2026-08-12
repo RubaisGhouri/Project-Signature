@@ -4,11 +4,11 @@ import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 
 const roles = [
-  "Creative Frontend Engineer",
   "WordPress Web Specialist",
   "Next.js Developer",
-  "UI Motion Designer",
   "Creative Technologist",
+  "UI Motion Designer",
+  "Premium Web Experiences",
 ];
 
 export default function HeroRoles() {
@@ -18,11 +18,12 @@ export default function HeroRoles() {
     if (!textRef.current) return;
 
     const el = textRef.current;
+
     let index = 0;
 
     const interval = setInterval(() => {
       gsap.to(el, {
-        y: -18,
+        y: -20,
         opacity: 0,
         filter: "blur(8px)",
         duration: 0.35,
@@ -33,7 +34,7 @@ export default function HeroRoles() {
           el.textContent = roles[index];
 
           gsap.set(el, {
-            y: 18,
+            y: 20,
             opacity: 0,
             filter: "blur(8px)",
           });
@@ -47,7 +48,7 @@ export default function HeroRoles() {
           });
         },
       });
-    }, 2800);
+    }, 2500);
 
     return () => clearInterval(interval);
   }, []);
@@ -57,13 +58,13 @@ export default function HeroRoles() {
       data-hero="roles"
       className="
         relative
-        mt-6
-        h-10
-        w-[460px]
-        overflow-hidden
+        mt-8
         flex
+        h-12
+        w-full
         items-center
         justify-center
+        overflow-hidden
       "
     >
       <span
@@ -71,11 +72,15 @@ export default function HeroRoles() {
         className="
           absolute
           whitespace-nowrap
-          text-xl
+          text-center
+          text-lg
           font-medium
-          tracking-wide
+          tracking-[0.2em]
+          uppercase
           text-cyan-300
           will-change-transform
+          sm:text-xl
+          lg:text-2xl
         "
       >
         {roles[0]}

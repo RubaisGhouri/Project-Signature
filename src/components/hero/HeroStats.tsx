@@ -1,15 +1,17 @@
+"use client";
+
 const stats = [
   {
     value: "40+",
     label: "Projects",
   },
   {
-    value: "4+",
-    label: "Years Learning",
-  },
-  {
     value: "10+",
     label: "Technologies",
+  },
+  {
+    value: "100%",
+    label: "Performance Focus",
   },
 ];
 
@@ -18,25 +20,48 @@ export default function HeroStats() {
     <div
       data-hero="stats"
       className="
-        mt-14
-        flex
-        flex-wrap
-        justify-center
-        gap-12
+        mt-16
+        grid
+        w-full
+        max-w-3xl
+        grid-cols-1
+        gap-8
+        sm:grid-cols-3
       "
     >
-      {stats.map((item) => (
+      {stats.map((stat) => (
         <div
-          key={item.label}
-          className="text-center"
+          key={stat.label}
+          className="
+            flex
+            flex-col
+            items-center
+            justify-center
+          "
         >
-          <h3 className="text-3xl font-bold text-white">
-            {item.value}
-          </h3>
+          <span
+            className="
+              text-5xl
+              font-black
+              leading-none
+              text-white
+            "
+          >
+            {stat.value}
+          </span>
 
-          <p className="mt-2 text-sm uppercase tracking-[0.25em] text-slate-400">
-            {item.label}
-          </p>
+          <span
+            className="
+              mt-3
+              text-xs
+              uppercase
+              tracking-[0.35em]
+              text-white/50
+              text-center
+            "
+          >
+            {stat.label}
+          </span>
         </div>
       ))}
     </div>

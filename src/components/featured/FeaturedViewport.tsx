@@ -6,8 +6,10 @@ export default function FeaturedViewport() {
   return (
     <div
       className="
-        relative
-        h-full
+        sticky
+        top-0
+        h-[100svh]
+        min-h-[700px]
         w-full
         overflow-hidden
       "

@@ -3,7 +3,6 @@
 import { useRef } from "react";
 
 import FeaturedViewport from "./FeaturedViewport";
-
 import { useFeaturedProjects } from "@/hooks/featured/useFeaturedProjects";
 
 export default function FeaturedStage() {
@@ -16,8 +15,8 @@ export default function FeaturedStage() {
       ref={sectionRef}
       className="
         relative
-        h-screen
-        overflow-hidden
+        h-[600svh]
+        w-full
       "
     >
       <FeaturedViewport />

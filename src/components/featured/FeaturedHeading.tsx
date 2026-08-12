@@ -2,32 +2,43 @@ export default function FeaturedHeading() {
   return (
     <div
       className="
+        relative
+        z-20
         mx-auto
-        max-w-7xl
+        w-full
+        max-w-[1440px]
         px-6
-        pt-32
-        pb-20
+        pb-16
+        pt-28
+        lg:px-12
+        lg:pt-36
       "
     >
       <p
         className="
-          mb-4
-          text-sm
+          mb-5
+          text-xs
+          font-medium
           uppercase
           tracking-[0.4em]
-          text-cyan-400
+          text-cyan-300/70
         "
       >
-        Portfolio
+        Selected Work
       </p>
 
       <h2
         className="
-          text-6xl
+          max-w-4xl
+          text-5xl
           font-black
-          leading-none
+          uppercase
+          leading-[0.88]
+          tracking-[-0.045em]
           text-white
-          md:text-8xl
+          sm:text-6xl
+          md:text-7xl
+          lg:text-8xl
         "
       >
         Featured

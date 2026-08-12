@@ -1,33 +1,46 @@
-import { siteConfig } from "@/constants/site-config";
+"use client";
 
 export default function HeroHeading() {
-  const words = siteConfig.name.split(" ");
-
   return (
-    <h1
-      data-hero="title"
+    <div
       className="
-        mt-8
-        text-center
-        font-heading
-        text-6xl
-        font-black
-        leading-none
-        tracking-tight
-        text-white
-        md:text-8xl
-        xl:text-[8rem]
+        relative
+        mt-6
+        w-full
+        overflow-hidden
       "
     >
-      {words.map((word, index) => (
-        <span
-          key={index}
-          className="inline-block mr-5"
-          data-word
-        >
-          {word}
+      <h1
+        className="
+          mx-auto
+          max-w-[1200px]
+          text-center
+          text-[clamp(4rem,9vw,8.5rem)]
+          font-black
+          uppercase
+          leading-[0.82]
+          tracking-[-0.055em]
+          text-white
+        "
+      >
+        <span className="block overflow-hidden">
+          <span
+            data-heading-line
+            className="block"
+          >
+            Creative Frontend
+          </span>
         </span>
-      ))}
-    </h1>
+
+        <span className="block overflow-hidden">
+          <span
+            data-heading-line
+            className="block"
+          >
+            Engineer
+          </span>
+        </span>
+      </h1>
+    </div>
   );
 }

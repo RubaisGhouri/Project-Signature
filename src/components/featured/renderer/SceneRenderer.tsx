@@ -21,6 +21,9 @@ export default function SceneRenderer() {
             className="
               absolute
               inset-0
+              h-full
+              w-full
+              overflow-hidden
               will-change-transform
             "
             style={{
@@ -30,8 +33,8 @@ export default function SceneRenderer() {
               zIndex: index === 0 ? 10 : 0,
               transform:
                 index === 0
-                  ? "scale(1)"
-                  : "scale(0.95)",
+                  ? "translate3d(0,0,0) scale(1)"
+                  : "translate3d(0,0,0) scale(0.96)",
             }}
           >
             <Scene />

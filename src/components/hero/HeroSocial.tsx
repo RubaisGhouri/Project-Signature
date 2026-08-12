@@ -1,35 +1,98 @@
+"use client";
+
+const socialLinks = [
+  {
+    label: "LI",
+    name: "LinkedIn",
+    href: "#",
+  },
+  {
+    label: "GH",
+    name: "GitHub",
+    href: "#",
+  },
+  {
+    label: "IG",
+    name: "Instagram",
+    href: "#",
+  },
+  {
+    label: "BE",
+    name: "Behance",
+    href: "#",
+  },
+];
+
 export default function HeroSocial() {
   return (
     <div
-      data-hero="socials"
+      data-hero="social"
       className="
-      absolute
-      left-8
-      bottom-12
-      z-20
-      hidden
-      lg:flex
-      flex-col
-      gap-4
+        absolute
+        bottom-10
+        left-6
+        z-30
+        hidden
+        flex-col
+        items-center
+        lg:flex
       "
     >
-      <span className="text-xs tracking-[0.3em] text-white/30 rotate-180 [writing-mode:vertical-rl]">
-        SOCIAL
+      {/* Social Label */}
+
+      <span
+        className="
+          mb-6
+          [writing-mode:vertical-rl]
+          rotate-180
+          text-[10px]
+          font-medium
+          uppercase
+          tracking-[0.4em]
+          text-white/40
+        "
+      >
+        Social
       </span>
 
-      <div className="h-20 w-px bg-white/10" />
+      {/* Vertical Line */}
 
-      <a href="#" className="text-white/40 hover:text-cyan-400 transition">
-        in
-      </a>
+      <span
+        className="
+          mb-7
+          h-20
+          w-px
+          bg-white/20
+        "
+      />
 
-      <a href="#" className="text-white/40 hover:text-cyan-400 transition">
-        Gh
-      </a>
+      {/* Social Links */}
 
-      <a href="#" className="text-white/40 hover:text-cyan-400 transition">
-        Ig
-      </a>
+      <div className="flex flex-col items-center gap-5">
+        {socialLinks.map((social) => (
+          <a
+            key={social.label}
+            href={social.href}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={social.name}
+            title={social.name}
+            className="
+              text-[11px]
+              font-medium
+              uppercase
+              tracking-[0.2em]
+              text-white/45
+              transition-all
+              duration-300
+              hover:-translate-y-0.5
+              hover:text-cyan-300
+            "
+          >
+            {social.label}
+          </a>
+        ))}
+      </div>
     </div>
   );
 }
